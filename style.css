@@ -7,6 +7,7 @@ html,
 body{
     overflow: hidden;
 }
+
 #canvas {
     position: absolute;
     background: #000;

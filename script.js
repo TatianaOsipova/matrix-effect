@@ -1,29 +1,44 @@
 import { Column } from "./column.js";
 
 const canvas = document.getElementById('canvas');
-const contex = canvas.getContext('2d');
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+const context = canvas.getContext('2d');
 
 const FONT_SIZE = 16;
+let columns = [];
+let columnsCount = 0;
 
-context.font = `bold ${FONT_SIZE}px monospace`;
-
-const column = new Column(100, FONT_SIZE, canvas.height, context);
-
-function animate() {
-    context.fillStyle = 'black';
-    context.fillRect(0, 0, canvas.width, canvas.height);
-
-    context.fillStyle = 'green';
-    column.drawSymbol();
-
-
-    // context.fillText('M', 100, y);
-    // y += FONT_SIZE;
-
-    setTimeout(() => requestAnimationFrame(animate), 50);
-}
+initCanvasSize();
+initColumns();
 
 animate();
+
+function initCanvasSize() {
+  canvas.width = document.documentElement.clientWidth;
+  canvas.height = document.documentElement.clientHeight;
+}
+
+function initColumns() {
+  columnsCount = canvas.width / FONT_SIZE;
+  columns = [];
+  for (let i = 0; i < columnsCount; i++) {
+    columns.push(new Column(i * FONT_SIZE, FONT_SIZE, canvas.height, context));
+  }
+}
+
+function animate() {
+  context.fillStyle = 'rgba(0, 0, 0, 0.05)';
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  // set symbols color
+  context.fillStyle = 'green';
+  context.font = `bold ${FONT_SIZE}px monospace`;
+  columns.forEach(column => column.drawSymbol());
+
+  setTimeout(() => requestAnimationFrame(animate), 50);
+}
+
+window.addEventListener('resize', () => {
+  initCanvasSize();
+  initColumns();
+  context.clearRect(0, 0, canvas.width, canvas.height);
+});
