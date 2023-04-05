@@ -9,5 +9,13 @@ const FONT_SIZE = 16;
 contex.font = `bold ${FONT_SIZE}px monospace`;
 contex.fillStyle = 'green';
 
-contex.fillText('M', 100, 100);
-contex.fillText('M', 100, 100 + 16);
+let y = 0;
+
+function animate() {
+    contex.fillText('M', 100, y);
+    y += FONT_SIZE;
+
+    setTimeout(() => requestAnimationFrame(animate), 50);
+}
+
+animate();
